@@ -5,7 +5,7 @@ Parameters:
   EnvironmentName:
     Description: Environment name that will be prefixed to resource names
     Type: String
-    Default: dev
+    Default: week5lab
 
   VpcCIDR:
     Description: CIDR block for the VPC
@@ -250,8 +250,8 @@ Resources:
       VpcId: !Ref VPC
       SecurityGroupIngress:
         - IpProtocol: tcp
-          FromPort: 3000
-          ToPort: 3000
+          FromPort: 5000
+          ToPort: 5000
           SourceSecurityGroupId: !Ref ALBSecurityGroup
       Tags:
         - Key: Name
@@ -281,7 +281,7 @@ Resources:
     Properties:
       Name: !Sub ${EnvironmentName}-TG-Blue
       VpcId: !Ref VPC
-      Port: 3000
+      Port: 5000
       Protocol: HTTP
       TargetType: ip
       HealthCheckPath: /
@@ -302,7 +302,7 @@ Resources:
     Properties:
       Name: !Sub ${EnvironmentName}-TG-Green
       VpcId: !Ref VPC
-      Port: 3000
+      Port: 5000
       Protocol: HTTP
       TargetType: ip
       HealthCheckPath: /
