@@ -22,7 +22,6 @@ export const uploadFileToS3 = async (file) => {
   return s3.upload(uploadParams).promise();
 };
 
-
 export const listFilesFromS3 = async () => {
   const params = {
     Bucket: process.env.AWS_BUCKET_NAME,
@@ -31,8 +30,18 @@ export const listFilesFromS3 = async () => {
 
   const data = await s3.listObjectsV2(params).promise();
   return data.Contents.map((item) => ({
-    name: item.Key,
+    name: item.Key.split("uploads/")[1],
     url: `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${item.Key}`,
   }));
 };
 // export default uploadFileToS3;
+
+// delete object from s3
+export const deleteFile = async (fileName) => {
+  const params = {
+    Bucket: process.env.AWS_BUCKET_NAME, // Your S3 bucket name
+    Key: `uploads/${fileName}`, // Path inside S3 bucket
+  };
+
+  return s3.deleteObject(params).promise();
+};

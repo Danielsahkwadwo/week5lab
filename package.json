@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "node --watch src/server.js",
-    "start": "node src/server.js"
+    "start": "nodemon src/server.js"
   },
   "dependencies": {
     "aws-sdk": "^2.1692.0",

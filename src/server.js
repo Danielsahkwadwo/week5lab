@@ -6,7 +6,7 @@ import { dirname, join } from "path";
 import fs from "fs";
 import { mkdir } from "fs/promises";
 import "dotenv/config";
-import { uploadFileToS3, listFilesFromS3 } from "./utils/AWSConfig.js";
+import { uploadFileToS3, listFilesFromS3, deleteFile } from "./utils/AWSConfig.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -66,19 +66,9 @@ app.post("/upload", async (req, res) => {
     const file = req.files.image;
     const fileName = `${Date.now()}-${file.name}`;
 
-    // Save file to public directory
-    // const filePath = join(__dirname, "public", "uploads", fileName);
-    // await file.mv(filePath);
-    // console.log(file);
-    uploadFileToS3(file);
+    file.fileName = fileName;
+    await uploadFileToS3(file);
 
-    // Add image to array
-    // images.push({
-    //   id: Date.now().toString(),
-    //   name: file.name,
-    //   url: `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/uploads/${fileName}`,
-    // });
-    console.log(fileName);
     res.redirect("/");
   } catch (error) {
     console.error("Error uploading image:", error);
@@ -94,39 +84,14 @@ app.post("/upload", async (req, res) => {
 app.post("/delete/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const imageIndex = images.findIndex((img) => img.id === id);
 
-    const imageToDelete = images.find((img) => img.id === id);
-    if (imageIndex !== -1) {
-      // Remove image from array
-      images.splice(imageIndex, 1);
-      // Delete file from public directory
-      // const filePath = join(__dirname, "uploads", images[imageIndex].name);
-      fs.unlinkSync(join(__dirname, "public", imageToDelete.url), (error, data) => {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log("image deleted successfully");
-        }
-      });
-    }
-
+    await deleteFile(id);
     res.redirect("/");
   } catch (error) {
     console.error("Error deleting image:", error);
     res.redirect("/?error=Failed to delete image");
   }
 });
-
-// Create uploads directory if it doesn't exist
-
-try {
-  await mkdir(join(__dirname, "public", "uploads"), { recursive: true });
-} catch (error) {
-  if (error.code !== "EEXIST") {
-    console.error("Error creating uploads directory:", error);
-  }
-}
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
