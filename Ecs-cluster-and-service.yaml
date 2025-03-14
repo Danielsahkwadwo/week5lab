@@ -253,4 +253,3 @@ Outputs:
     Value: !GetAtt ServiceBlue.Name
     Export:
       Name: !Sub ${EnvironmentName}-SERVICE-BLUE
-</antArt

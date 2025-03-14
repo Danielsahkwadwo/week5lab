@@ -35,8 +35,8 @@ app.get("/", async (req, res) => {
     const offset = (page - 1) * limit;
 
     const files = await listFilesFromS3();
-    let allImages = [...images, ...files];
-    const paginatedImages = allImages.slice(offset, offset + limit);
+    // let allImages = [...images, ...files];
+    const paginatedImages = files.slice(offset, offset + limit);
     const totalPages = Math.ceil(files.length / limit);
 
     res.render("index", {
@@ -73,11 +73,11 @@ app.post("/upload", async (req, res) => {
     uploadFileToS3(file);
 
     // Add image to array
-    images.push({
-      id: Date.now().toString(),
-      name: file.name,
-      url: `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/uploads/${fileName}`,
-    });
+    // images.push({
+    //   id: Date.now().toString(),
+    //   name: file.name,
+    //   url: `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/uploads/${fileName}`,
+    // });
     console.log(fileName);
     res.redirect("/");
   } catch (error) {

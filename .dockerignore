@@ -4,3 +4,5 @@ npm-debug-log
 .git
 tmp
 .DS_Store
+week5-vpc-template.yaml
+Ecs-cluster-and-service.yaml
