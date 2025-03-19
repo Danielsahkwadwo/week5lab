@@ -8,7 +8,7 @@ on:
 env:
   AWS_REGION: us-east-1 # Replace with your preferred AWS region
   ECR_PUBLIC_REGISTRY: public.ecr.aws/p2l9n5r2
-  ECR_REPOSITORY: week5nodeapp # Replace with your ECR repository name
+  ECR_REPOSITORY: week5-repo # Replace with your ECR repository name
   IMAGE_TAG: danielkwadwosah_week5nodeapp
   ECS_CLUSTER: MyAppCluster
   ECS_SERVICE: MyAppALB-Service
